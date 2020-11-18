@@ -53,16 +53,25 @@ Parameters:
     Type: String
     Default: 2
 
-Mappings:
-  RegionMap:
-    us-east-1:
-      AMI: ami-0947d2ba12ee1ff75
-    us-west-1:
-      AMI: ami-0e4035ae3f70c400f
-    us-east-2:
-      AMI: ami-03657b56516ab7912
-    us-west-2:
-      AMI: ami-0528a5175983e7f28
+  AmiId:
+    Type: String
+    Default: ami-03657b56516ab7912
+    AllowedValues:
+      - ami-0947d2ba12ee1ff75
+      - ami-0e4035ae3f70c400f
+      - ami-03657b56516ab7912
+      - ami-0528a5175983e7f28
+
+#Mappings:
+#  RegionMap:
+#    us-east-1:
+#      AMI: ami-0947d2ba12ee1ff75
+#    us-west-1:
+#      AMI: ami-0e4035ae3f70c400f
+#    us-east-2:
+#      AMI: ami-03657b56516ab7912
+#    us-west-2:
+#      AMI: ami-0528a5175983e7f28
 
 Resources:
   MyVpc:
@@ -170,7 +179,7 @@ Resources:
   ContainerInstances:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
-      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      ImageId: !Ref AmiId
       SecurityGroups: [!Ref 'ContainerSecurityGroup']
       InstanceType: !Ref InstanceTypeParameter
       IamInstanceProfile: !Ref 'EC2InstanceProfile'
